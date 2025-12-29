@@ -1,6 +1,6 @@
-<a href="https://rubygems.org/gems/dependency" title="Install gem"><img src="https://badge.fury.io/rb/dependency.svg" alt="Gem version" height="18"></a>
+<a href="https://rubygems.org/gems/low_dependency" title="Install gem"><img src="https://badge.fury.io/rb/low_dependency.svg" alt="Gem version" height="18"></a>
 
-# Dependency
+# LowDependency
 
 Dependency Injection where you get to keep control of the constructor.
 
@@ -21,7 +21,7 @@ Or you may like to use the more traditional `include` syntax (which hides and cr
 
 ```ruby
 class MyClass
-  include Dependency[:my_dependency]
+  include LowDependency[:my_dependency]
 
   def my_method
     my_dependency # => The dependency is injected.
@@ -33,7 +33,7 @@ end
 
 Provide the dependency with:
 ```ruby
-Dependency.provide(:my_dependency) do
+LowDependency.provide(:my_dependency) do
   MyDependency.new
 end
 ```
@@ -61,7 +61,7 @@ In the example above `provider_dependency` will automatically be injected by Dep
 
 ## Installation
 
-Add `gem 'dependency'` to your Gemfile then:
+Add `gem 'low_dependency'` to your Gemfile then:
 ```
 bundle install
 ```
