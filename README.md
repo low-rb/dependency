@@ -2,7 +2,7 @@
 
 # LowDependency
 
-Dependency Injection where you get to keep control of the constructor.
+Automatic Dependency Injection where you get to see and keep control of the constructor.
 
 ## Injection
 
@@ -10,24 +10,29 @@ Inject a dependency:
 
 ```ruby
 class MyClass
+  include LowType
+
   def initialize(my_dependency: Dependency)
-    my_dependency # => The dependency is injected.
+    @my_dependency = my_dependency # => The dependency is injected.
   end
 end
 ```
 
-The above example requires [LowType](https://github.com/low-rb/low_type) in order to use the `def(dependency: Dependency)` syntax.  
-Or you may like to use the more traditional `include` syntax (which hides and creates the constructor):
+The above example requires [LowType](https://github.com/low-rb/low_type) in order to use the `def(dependency: Dependency)` syntax.
+
+Or you may like to use the more traditional `include` syntax:
 
 ```ruby
 class MyClass
   include LowDependency[:my_dependency]
 
   def my_method
-    my_dependency # => The dependency is injected.
+    @my_dependency # => The dependency is injected.
   end
 end
 ```
+
+This method hides and creates the constructor on your behalf.
 
 ## Providers
 
@@ -38,15 +43,17 @@ LowDependency.provide(:my_dependency) do
 end
 ```
 
-ℹ️ **Note:** Make sure you *require* the file providing your dependencies before you define them.
+ℹ️ **Usage:** Make sure you *require* the file providing your dependencies before you define them.
 
-## Mixed dependencies
+## Mixing dependency types
 
-Dependency lets you mix "classical" dependency injection (passing an arg to a `new` method) with "provider" style dependency injection (populating an arg via a framework):
+LowDependency lets you do something quite special; mix "classical" dependency injection (passing an arg to `new`) with "provider" style dependency injection (populating an arg via framework):
 
 ```ruby
 # Define both a "provider" and a "classical" dependency:
 class MyClass
+  include LowType
+
   def initialize(provider_dependency: Dependency, classical_dependency:)
     @provider_dependency = provider_dependency
     @classical_dependency = classical_dependency
@@ -57,7 +64,9 @@ end
 MyClass.new(classical_dependency: ClassicalDependency.new)
 ```
 
-In the example above `provider_dependency` will automatically be injected by Dependency.
+The `provider_dependency` argument will automatically be injected by LowDependency!
+
+Now you get to have your classical dependency cake 🍰 and eat it too with an automatically injected dependency spoon! 🥣
 
 ## Installation
 
