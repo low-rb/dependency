@@ -52,15 +52,15 @@ end
 
 ## Mixing dependency types
 
-LowDependency lets you do something special; mix "classical" dependency injection (passing an arg to `new`) with "provider" style dependency injection (populating an arg via framework):
+LowDependency lets you do something special; mix "classical" dependency injection (passing an arg to `new`) with "automatic" style dependency injection (populating via a provider):
 
 ```ruby
-# Define both a "provider" and a "classical" dependency:
+# Define both a "automatic" and a "classical" dependency:
 class MyClass
   include LowType
 
-  def initialize(provider_dependency: Dependency, classical_dependency:)
-    @provider_dependency = provider_dependency
+  def initialize(automatic_dependency: Dependency, classical_dependency:)
+    @automatic_dependency = automatic_dependency
     @classical_dependency = classical_dependency
   end
 end
@@ -69,7 +69,7 @@ end
 MyClass.new(classical_dependency: ClassicalDependency.new)
 ```
 
-The `provider_dependency` argument will automatically be injected by LowDependency!
+The `automatic_dependency` argument will automatically be injected by LowDependency!
 
 Now you get to have your classical dependency cake 🍰 and eat it too with an automatically injected dependency spoon 🥣
 
@@ -87,7 +87,7 @@ def initialize(dependency_one: Dependency | :provider_one, dependency_two: Depen
 end
 ```
 
-ℹ️ The value after the pipe `|` becomes the provider key. When the provider key is omitted then the name of the positional/keyword argument is substituted instead.
+ℹ️ The value after the pipe `|` becomes the provider key. When the provider key is omitted then the name of the positional/keyword argument is substituted as the provider key instead.
 
 ### Traditional Dependency
 
@@ -108,7 +108,7 @@ class MyClass
 end
 ```
 
-Separate a lot of dependencies on multiple lines:
+Separating many dependencies on multiple lines:
 ```ruby
 class MyClass
   include LowDependency[
