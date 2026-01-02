@@ -43,7 +43,14 @@ LowDependency.provide(:my_dependency) do
 end
 ```
 
-ℹ️ **Usage:** Make sure you *require* the file providing your dependencies before you define them.
+Namespaced string keys are fine too:
+```ruby
+LowDependency.provide('billing.payment_provider') do
+  PaymentProvider.new
+end
+```
+
+ℹ️ **Usage:** Make sure you `require` the file that provides your dependencies before you define them.
 
 ## Mixing dependency types
 
@@ -67,6 +74,54 @@ MyClass.new(classical_dependency: ClassicalDependency.new)
 The `provider_dependency` argument will automatically be injected by LowDependency!
 
 Now you get to have your classical dependency cake 🍰 and eat it too with an automatically injected dependency spoon 🥣
+
+## API
+
+### Dependency Expression
+
+The `def(dependency: Dependency)` syntax is an [Expression](https://github.com/raindeer-rb/expressions); an object composed via a query builder like interface.  
+A Dependency Expression defines the name of the local variable, as well as the name of the provider that will inject the dependency into your code.
+
+To define a provider with a different name to that of the local variable do:
+```ruby
+def initialize(dependency_one: Dependency | :provider_one, dependency_two: Dependency | 'billing.provider_two')
+  dependency_one # => Dependency injected from :provider_one.
+  dependency_two # => Dependency injected from 'billing.provider_two'.
+end
+```
+
+ℹ️ The value after the pipe `|` becomes the provider key. When the provider key is omitted then the name of the positional/keyword argument is substituted instead.
+
+### Traditional Dependency
+
+The `include` style syntax supports the same functionallity as the dependency expression syntax does.
+
+Multiple dependencies:
+```ruby
+class MyClass
+  include LowDependency[:dependency_one, :dependency_two]
+end
+```
+
+Dependencies with differing local variable/provider keys:
+```ruby
+class MyClass
+  include LowDependency[dependency_one: :provider_one, dependency_two: 'billing.provider_two']
+  # Instance variables @dependency_one and @dependency_two are now available.
+end
+```
+
+Separate a lot of dependencies on multiple lines:
+```ruby
+class MyClass
+  include LowDependency[
+    dependency_one: :provider_one,
+    dependency_two: 'billing.provider_two',
+    :dependency_three,
+    :four_dependencies_is_still_quite_reasonable_yeah,
+  ]
+end
+```
 
 ## Installation
 
