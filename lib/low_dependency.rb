@@ -20,12 +20,19 @@ class LowDependency
   end
 
   # "include LowDependency[:dependency]"
-  def self.[](dependencies)
+  def self.[](*dependencies)
     item = []
 
-    [*dependencies].each do |var, key|
-      key = var if key.nil?
-      item << (Low::Dependency.new(var:) | key)
+    [*dependencies].each do |dependency|
+      case dependency
+      when Hash
+        key = dependency.keys.first
+        dependency = dependency[key]
+      else
+        key = dependency
+      end
+
+      item << (Low::Dependency.new(var: dependency) | key)
     end
 
     LowDependency.stack << item
@@ -41,7 +48,9 @@ class LowDependency
 
           def initialize
             self.class.low_dependencies.each do |dependency|
-              instance_variable_set("@#{dependency.var}", LowDependency.providers[dependency.key].result)
+              provider = LowDependency.providers[dependency.key]
+              raise StandardError, "Provider #{dependency.key} not found" if provider.nil?
+              instance_variable_set("@#{dependency.var}", provider.result)
             end
           end
 
