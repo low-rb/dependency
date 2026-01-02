@@ -108,6 +108,8 @@ class MyClass
 end
 ```
 
+ℹ️ String keys with a namespace such as `'billing.provider_two'` will have their dependency injected without the namespace; the variable will just be called `provider_two`.
+
 Separating many dependencies on multiple lines:
 ```ruby
 class MyClass

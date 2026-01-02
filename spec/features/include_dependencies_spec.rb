@@ -27,6 +27,16 @@ RSpec.describe 'include LowDependency[:dependency]' do
         expect(subject.provider_one).to be_instance_of(MockProvider)
       end
     end
+
+    context 'with a namespaced string key dependency' do
+      let(:subject) { IncludeNamespacedStringDependency.new }
+
+      before { LowDependency.provide('namespace.provider_one') { MockProvider.new } }
+
+      it 'injects dependency without namespace' do
+        expect(subject.provider_one).to be_instance_of(MockProvider)
+      end
+    end
   end
 
   context 'with multiple dependencies' do
@@ -51,6 +61,20 @@ RSpec.describe 'include LowDependency[:dependency]' do
       end
 
       it 'injects dependencies' do
+        expect(subject.provider_one).to be_instance_of(MockProvider)
+        expect(subject.provider_two).to be_instance_of(MockProvider)
+      end
+    end
+
+    context 'with namespaced string key dependencies' do
+      let(:subject) { IncludeNamespacedStringDependencies.new }
+
+      before do
+        LowDependency.provide('namespace.provider_one') { MockProvider.new }
+        LowDependency.provide('namespace.provider_two') { MockProvider.new }
+      end
+
+      it 'injects dependencies without namespace' do
         expect(subject.provider_one).to be_instance_of(MockProvider)
         expect(subject.provider_two).to be_instance_of(MockProvider)
       end
