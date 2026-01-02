@@ -50,8 +50,6 @@ LowDependency.provide('billing.payment_provider') do
 end
 ```
 
-ℹ️ **Usage:** Make sure you `require` the file that provides your dependencies before you define them.
-
 ## Mixing dependency types
 
 LowDependency lets you do something special; mix "classical" dependency injection (passing an arg to `new`) with "provider" style dependency injection (populating an arg via framework):
@@ -79,8 +77,7 @@ Now you get to have your classical dependency cake 🍰 and eat it too with an a
 
 ### Dependency Expression
 
-The `def(dependency: Dependency)` syntax is an [Expression](https://github.com/raindeer-rb/expressions); an object composed via a query builder like interface.  
-A Dependency Expression defines the name of the local variable, as well as the name of the provider that will inject the dependency into your code.
+The `def(dependency: Dependency)` syntax is an [Expression](https://github.com/raindeer-rb/expressions); an object composed via a query builder like interface. A Dependency Expression defines the name of the local variable, as well as the name of the provider that will inject the dependency into your code.
 
 To define a provider with a different name to that of the local variable do:
 ```ruby
@@ -94,7 +91,7 @@ end
 
 ### Traditional Dependency
 
-The `include` style syntax supports the same functionallity as the dependency expression syntax does.
+The `include` style syntax supports the same functionallity as the dependency expression syntax.
 
 Multiple dependencies:
 ```ruby
