@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'low_type'
+require_relative 'config/config'
 require_relative 'expressions/dependency'
 require_relative 'factories/dependency_factory'
 require_relative 'repositories/dependencies'
